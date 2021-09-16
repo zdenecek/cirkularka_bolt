@@ -2,79 +2,42 @@
 
 {% block main %}
 
-<!--Container-->
+	<!--Container-->
 
-<section class="bg-gray-100 mt-16 w-full">
+	<section class="bg-gray-100 w-full">
 
-  <div class="mb-4 md:mb-0 w-full mx-auto relative" style="height: 32em;">
-    <div class="absolute left-0 bottom-0 w-full h-full z-10"
-      style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.3));">
-    </div>
-    <img src="{{ record|image }}" class="absolute left-0 top-0 w-full h-full z-0 object-cover" />
+		<div class="container pt-16 pb-16 w-full mx-auto">
 
-    <div class="flex flex-col p-4 w-full absolute bottom-0 left-0 z-20">
-      <div class="w-full max-w-4xl mx-auto pb-20">
-        <h1 class="text-2xl lg:text-5xl text-white font-semibold leading-tight" style="text-shadow: 0.5rem 0.5rem 2rem rgba(0, 0, 0, 0.25);">
-          {{ record|title }}
-        </h1>
-        {% include 'partials/_record_header_author.twig' %}
-      </div>
-    </div>
-
-  {% include 'partials/_record_divider_top.twig' %}
-
-  </div>
-
-  <div class="container w-full max-w-3xl mx-auto text-black pt-20">
-
-    <div class="w-full px-4 text-grey-darkest leading-normal">
-
-      <!-- Record Content-->
-
-      <article class="article">
-        {% if record|edit_link %}
-          <a href="{{ record|edit_link }}" class="px-4 py-1 gradient text-gray-200 inline-flex items-center justify-center mb-2 rounded-md">
-            {{ __('general.phrase.edit') }}
-          </a>
-        {% endif %}
-
-        <h1>{{ record|title }}</h1>
-
-        {% with { 'record': record, 'exclude': [record|image.fieldname|default(), 'teaser'] } %}
-        {{ block('sub_fields', 'helpers/_fields.twig') }}
-        {% endwith %}
-      </article>
-
-      <!--/ Record Content-->
-
-    </div>
-
-    <!--Tags -->
-    <div class="text-base md:text-sm text-grey px-4 py-6">
-      {% for type, taxonomies in record|taxonomies %}
-        {{ config.get('taxonomies/' ~ type).name }}:
-        {% for taxonomy in taxonomies %}
-          <a href="{{ taxonomy|link }}" class="text-base md:text-sm text-teal no-underline hover:underline">{{ taxonomy.name }}</a>
-          {%- if not loop.last %}, {% endif %}
-        {% endfor %}
-        <br>
-      {% endfor %}
-    </div>
-
-    <!--Divider-->
-    {# If you have a newsletter, uncomment the following, to insert the subscription block #}
-    {# {% include 'partials/_record_newsletter_sub.twig' %} #}
+			<div class="p-4 pb-20 w-full flex flex-col items-center gap-2">
+				<h1 class="text-center text-3xl lg:text-5xl font-semibold leading-tight flex">
+					{{ record|title }}
+					{% if record|edit_link %}
+						<a href="{{ record|edit_link }}" class="p-1">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+							</svg>
+						</a>
+					{% endif %}
+				</h1>
 
 
-    {% include 'partials/_record_author.twig' %}
+				<div class="flex justify-center">
+					{% include 'partials/_record_header_author.twig' %}
+				</div>
+			</div>
 
-    <!--Divider-->
-    <hr class="border-b-2 border-grey-light mb-8 mx-4">
+			<div class="w-full px-4 text-grey-darkest leading-normal">
 
-    {% include 'partials/_record_prev_next.twig' %}
 
-  </div>
-</section>
-<!--/container-->
+				<article class="article pb-16">
+					{{ record.body }}
+				</article>
+
+
+			</div>
+		</div>
+
+	</section>
+	<!--/container-->
 
 {% endblock main %}

@@ -1,11 +1,19 @@
 {% set author = record|related('people')|first %}
 
 {% if author %}
-<div class="flex mt-3">
-    <img src="{{ author|thumbnail(200, 200, fit="crop") }}" class="h-10 w-10 rounded-full mr-2 object-cover" />
-    <div>
-        <p class="font-semibold text-gray-200 text-sm"> By {{ author.name }} </p>
-        <p class="font-semibold text-gray-400 text-xs"> {{ record.publishedAt|date("d M")}} </p>
-    </div>
-</div>
+	<div class="flex flex-row flex-wrap gap-4">
+			<span class=" text-gray-900">
+				{{ record.publishedAt|localdate}}
+			</span>
+			<span class="text-gray-900">
+				{{ record|related('people')|map(p => "#{p.name}")|join(',')}}
+			</span>
+			{% for type, taxonomies in record|taxonomies %}
+				{% for taxonomy in taxonomies %}
+					<span class="text-gray-900">
+						{{ taxonomy.name }}
+					</span>
+				{% endfor %}
+			{% endfor %}
+		</div>
 {% endif %}

@@ -1,15 +1,12 @@
 <!--Nav-->
-<div id="header" class="bg-white sticky top-0 w-full z-30 shadow">
+<div id="header" class="text-white fixed top-0 w-full z-30">
   <div x-data="{ open: false }"
     class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-4">
     <div class="py-4 flex flex-row items-center justify-between">
-      <a href="{{ path('homepage') }}">
-        <img src="{{ asset('img/logo.png')}}" class="h-12">
-        
+      <a href="{{ path('homepage') }}" class="text-lg font-semibold tracking-widest currentColor uppercase rounded-lg focus:outline-none focus:shadow-outline">
+        {% include 'img/logo.svg' %}
+        {{ config.get('general/sitename') }}
       </a>
-
-      
-      <!-- Hamburger -->
       <button class="md:hidden rounded-lg focus:outline-none focus:shadow-outline" @click="open = !open">
         <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
           <path x-show="!open" fill-rule="evenodd"
@@ -29,10 +26,10 @@
   {# The progess bar is only shown on Pages and Entries #}
   {% if record.contenttype|default == 'pages' %}
   <div id="progress" class="bg-white h-1 z-40"
-    style="background:linear-gradient(to right, #059669 var(--scroll), transparent 0);"></div>
+    style="background:linear-gradient(to right, #4dc0b5 var(--scroll), transparent 0);"></div>
   {% elseif record.contenttype|default == 'entries' %}
   <div id="progress" class="bg-white h-1 z-40"
-    style="background:linear-gradient(to right, #059669 var(--scroll), transparent 0);"></div>
+    style="background:linear-gradient(to right, #4dc0b5 var(--scroll), transparent 0);"></div>
   {% endif %}
 
 </div>

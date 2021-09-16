@@ -7,41 +7,42 @@ var navaction = document.getElementById("navAction");
 var brandname = document.getElementById("brandname");
 var toToggle = document.querySelectorAll(".toggleColour");
 
-document.addEventListener('scroll', function() {
+document.addEventListener('scroll' , function() {
 
-/*Apply classes for slide in bar*/
-scrollpos = window.scrollY;
-
-  if(scrollpos > 10){
-    header.classList.add("bg-white");
-  header.classList.remove("text-white");
-  header.classList.add("text-black");
-  //Use to switch toggleColour colours
-    for (var i = 0; i < toToggle.length; i++) {
-     toToggle[i].classList.add("text-black");
-     toToggle[i].classList.remove("text-white");
-  }
-  header.classList.add("shadow");
-
-  }
-  else {
-  header.classList.remove("bg-white");
-  header.classList.remove("text-black");
-  header.classList.add("text-white");
-
-  //Use to switch toggleColour colours
-    for (var i = 0; i < toToggle.length; i++) {
-     toToggle[i].classList.add("text-white");
-   toToggle[i].classList.remove("text-gray-800");
-  }
+  return;
+  /*Apply classes for slide in bar*/
+  scrollpos = window.scrollY;
   
-  header.classList.remove("shadow");
-
+    if(scrollpos > 10){
+      header.classList.add("bg-white");
+    header.classList.remove("text-white");
+    header.classList.add("text-black");
+    //Use to switch toggleColour colours
+      for (var i = 0; i < toToggle.length; i++) {
+       toToggle[i].classList.add("text-black");
+       toToggle[i].classList.remove("text-white");
+    }
+    header.classList.add("shadow");
   
-  }
-
-});
-
+    }
+    else {
+    header.classList.remove("bg-white");
+    header.classList.remove("text-black");
+    header.classList.add("text-white");
+  
+    //Use to switch toggleColour colours
+      for (var i = 0; i < toToggle.length; i++) {
+       toToggle[i].classList.add("text-white");
+     toToggle[i].classList.remove("text-gray-800");
+    }
+    
+    header.classList.remove("shadow");
+  
+    
+    }
+  
+  });
+  
 
 
 /*Toggle dropdown list*/
@@ -92,6 +93,7 @@ function checkParent(t, elm) {
 
 		document.addEventListener('scroll', function () {
 
+      return; 
 			/*Refresh scroll % width*/
 			scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
 			progress.style.setProperty('--scroll', scroll + '%');

@@ -1,0 +1,60 @@
+{% extends 'partials/_master.twig' %}
+
+{% block main %}
+	<article class="article">
+		<section class="bg-gray-100 w-full px-5 py-12">
+
+
+			<div class="container px-4 mx-auto">
+
+				{% for record in records %}
+
+					<div class="py-6 flex flex-col gap-4">
+						<h2 class="font-semibold">{{ record|title }}</h2>
+						<p class="leading-relaxed text-gray-700">
+							{{ record|excerpt(300, false, search|default('')) }}
+
+							<a href="{{ record|link }}" class="text-green-600 ">
+								{{ __('general.phrase.read-more') }}
+								&raquo;
+							</a>
+						</p>
+
+						<div class="flex flex-row flex-wrap gap-4">
+
+							<span class=" text-gray-900 text-sm">
+								{{ record.publishedAt|localdate}}
+							</span>
+							<span class="text-gray-900 text-sm">
+								{{ record|related('people')|map(p => "#{p.name}")|join(',')}}
+								
+
+							</span>
+							{% for type, taxonomies in record|taxonomies %}
+								{% for taxonomy in taxonomies %}
+									<span class="text-gray-900 text-sm">
+										{{ taxonomy.name }}
+									</span>
+								{% endfor %}
+							{% endfor %}
+						</div>
+						<div class="md:w-64 md:mb-0 mt-4 md:ml-4 mb-6 flex-shrink-0 flex flex-col">
+							{% if record|image %}
+								<img src="{{ record|thumbnail(400, 300, fit="crop") }}">
+							{% endif %}
+						</div>
+
+					</div>
+
+				{% else %}
+
+					<h2 class="text-2xl font-medium text-black title-font mb-2">{{ __('general.phrase.no-content-found') }}</h2>
+
+				{% endfor %}
+
+			</div>
+
+			{{ pager(records, template='helpers/_pager_tailwind.html.twig') }}
+		</section>
+	</article>
+{% endblock main %}

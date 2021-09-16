@@ -1,0 +1,90 @@
+{% extends 'partials/_master.twig' %}
+
+{% block main %}
+
+
+	<section class="bg-gray-100 w-full">
+
+		<article class="container mx-auto py-12 flex flex-col gap-2 items-center">
+			{% if record|image %}
+				<img class="rounded-full mx-auto shadow mb-2" src="{{ record|thumbnail(300, 300, fit="crop") }}">
+			{% endif %}
+			<h1 class="text-center">
+				<name class='text-center text-4xl'>
+					{{ record.name }}
+				</name>
+			</h1>
+			<p class='text-center text-lg'>{{ record.description }}
+			</p>
+			{% set author_entires = record|related('entries')|length %}
+
+      
+
+
+			{% if author_entires > 0 %}
+				<p class='text-center text-lg'>
+					Počet článků na webu:
+					{{author_entires}}
+				</p>
+
+			{% endif %}
+
+      {% if record.content is not empty %}
+        <h2 class="text-2xl mt-8"> O autorovi </h2>
+				<p class='text-center text-lg'>
+					{{record.content}}
+				</p>
+
+			{% endif %}
+
+			{% if author_entires > 0 %}
+    
+				<h2 class="text-2xl mt-8">
+					Články
+				</h2>
+        
+			  {% set entries = record|related('entries')%}
+        {% for entry in entries %}
+        	<div class="py-2 flex flex-col gap-4">
+						<h2 class="font-semibold">{{ entry|title }}</h2>
+						<p class="leading-relaxed text-gray-700">
+							{{ entry|excerpt(300, false, search|default('')) }}
+
+							<a href="{{ entry|link }}" class="text-green-600 ">
+								{{ __('general.phrase.read-more') }}
+								&raquo;
+							</a>
+						</p>
+
+						<div class="flex flex-row flex-wrap gap-4">
+
+							<span class=" text-gray-900 text-sm">
+								{{ entry.publishedAt|localdate}}
+							</span>
+							<span class="text-gray-900 text-sm">
+								{{ entry|related('people')|map(p => "#{p.name}")|join(',')}}
+							</span>
+							{% for type, taxonomies in entry|taxonomies %}
+								{% for taxonomy in taxonomies %}
+									<span class="text-gray-900 text-sm">
+										{{ taxonomy.name }}
+									</span>
+								{% endfor %}
+							{% endfor %}
+						</div>
+						<div class="md:w-64 md:mb-0 mt-4 md:ml-4 mb-6 flex-shrink-0 flex flex-col">
+							{% if entry|image %}
+								<img src="{{ entry|thumbnail(400, 300, fit="crop") }}">
+							{% endif %}
+						</div>
+
+					</div>
+
+				{% endfor %}
+			{% endif %}
+
+		</article>
+
+	</section>
+
+{% endblock main %}
