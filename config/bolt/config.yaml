@@ -7,6 +7,17 @@ payoff: ""
 
 secret: '%env(APP_SECRET)%'
 
+# Set the caching configuration for various areas of Bolt.
+# The expires_after is counted in seconds.
+caching:
+    related_options: 3600
+    canonical: 60
+    formatter: 60
+    selectoptions: 3600
+    content_array: ~
+    frontend_menu: 3600
+    backend_menu: 3600
+
 # The theme to use.
 #
 # Dont edit the provided templates directly, because they _will_ get updated
@@ -29,14 +40,26 @@ omit_backgrounds: false
 # If you're a party-pooper who wants to hide the `generator` meta tag and
 # `x-powered-by` header, set these to true
 omit_meta_generator_tag: false
-omit_powered_by_header: false
+
+headers:
+    # Allow of Google's FLoC by setting this to `true` (defaults to `false` for opt-out)
+    # https://github.com/symfony/symfony/pull/40989
+    allow-floc: false
+    # Add Bolt's "Powered By" (defaults to `true`)
+    powered_by: true
 
 # If your site is reachable under different urls (say, both blog.example.org/
 # as well as example.org/), its a good idea to set one of these as the
 # canonical, so its clear which is the primary address of the site.
 #
 # If you include `https://`, it will be included in the canonical urls.
-#canonical: example.org
+canonical: '%env(default::BOLT_CANONICAL)%'
+
+# If you want to override the canonical template, from the theme:
+#canonical_template: 'partials/_canonical.html.twig'
+
+# By setting this to true, you will get a relative canonical path passed to the template.
+#relative_canonical_url: true
 
 # Bolt can insert a <link rel="shortcut icon"> for all pages on the site.
 
@@ -79,8 +102,7 @@ forbidden: [ blocks/403-forbidden, 'helpers/page_403.html.twig' ]
 # handled, and you'll have a bad time debugging it!
 internal_server_error: [ 'helpers/page_500.html.twig' ]
 
-# The default template and amount of records to use for listing-pages on the
-# site.
+# The default template for record-pages on the site.
 #
 # Can be overridden for each content type and for each record, if it has a
 # templateselect field.
@@ -105,7 +127,11 @@ listing_sort: datepublish DESC
 # Allow filtering on listing pages using query parameters, much like you would
 # with {% setcontent %}. E.g. /pages?order=id and /pages?title--like=voluptat
 # Useful for search.
-query_search: true
+query_search:
+    # Enables filtering.
+    enable: true
+    # If true, query params with empty values will be ignored.
+    ignore_empty: false
 
 # Maximum amount of items to show in a `<select>` for picking a record. For
 # example in `type: select`.
@@ -162,13 +188,13 @@ filepermissions:
 # the allowed tags. For example, if you set `images: true`, the `<img>` tag
 # will be allowed, regardless of it being in the `allowed_tags` setting.
 htmlcleaner:
-    allowed_tags: [ div, span, p, br, hr, s, u, strong, em, i, b, li, ul, ol, mark, blockquote, pre, code, tt, h1, h2, h3, h4, h5, h6, dd, dl, dt, table, tbody, thead, tfoot, th, td, tr, a, img, address, abbr, iframe, caption, sub, sup, figure, figcaption, article, section, small ]
+    allowed_tags: [ div, span, p, br, hr, s, u, strong, em, i, b, li, ul, ol, mark, blockquote, cite, pre, code, tt, h1, h2, h3, h4, h5, h6, dd, dl, dt, table, tbody, thead, tfoot, th, td, tr, a, img, address, abbr, iframe, caption, sub, sup, figure, figcaption, article, section, small ]
     allowed_attributes: [ id, class, style, name, value, href, src, alt, title, width, height, frameborder, allowfullscreen, scrolling, target, colspan, rowspan, rel, download, hreflang ]
     allowed_frame_targets: [ _blank, _self, _parent, _top ]
 
 # Define the file types (extensions to be exact) that are acceptable for upload
 # in either file fields or through the files screen.
-accept_file_types: [ twig, html, js, css, scss, gif, jpg, jpeg, png, ico, zip, tgz, txt, md, doc, docx, pdf, epub, xls, xlsx, ppt, pptx, mp3, ogg, wav, m4a, mp4, m4v, ogv, wmv, avi, webm, svg, webp, avif]
+accept_file_types: [ yaml, twig, html, js, css, scss, gif, jpg, jpeg, png, ico, zip, tgz, txt, md, doc, docx, pdf, epub, xls, xlsx, ppt, pptx, mp3, ogg, wav, m4a, mp4, m4v, ogv, wmv, avi, webm, svg, webp, avif]
 
 # Alternatively, if you wish to limit these, uncomment the following list
 # instead. It just includes file types / extensions that are harder to exploit.
@@ -191,6 +217,7 @@ curl_options:
 # Various settings about Bolt's built-in localization features.
 localization:
     fallback_when_missing: true # When set to true, fields with empty values will fallback to the default locale's value.
+    remove_default_locale_on_canonical: true # When set to true removes locale prefix on default locale canonical URLs
 
 # Globally enable / disable the validator for Fields
 validator_options:
@@ -209,3 +236,6 @@ reset_password_settings:
     mail_name: "Bolt CMS"
     mail_subject: "Your password reset request"
     mail_template: "reset_password/email.html.twig"
+
+# Adds sorting and filtering of users in backend
+user_show_sort&filter: false

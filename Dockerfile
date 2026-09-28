@@ -4,7 +4,7 @@
 
 
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG PHP_VERSION=7.4
+ARG PHP_VERSION=8.2
 ARG OPENRESTY_VERSION=1.17.8.2
 
 # "php" stage
@@ -43,7 +43,6 @@ RUN set -eux; \
 		gd \
 		exif \
 		pdo \
-		iconv \
 		pcntl \
 		mbstring \
 		fileinfo \
@@ -83,7 +82,8 @@ RUN set -eux; \
 ENV COMPOSER_ALLOW_SUPERUSER=1
 # install Symfony Flex globally to speed up download of Composer packages (parallelized prefetching)
 RUN set -eux; \
-	composer global require "symfony/flex" --prefer-dist --no-progress --no-suggest --classmap-authoritative; \
+    composer global config --no-plugins allow-plugins.symfony/flex true; \
+	composer global require "symfony/flex" --prefer-dist --no-progress --classmap-authoritative; \
 	composer clear-cache
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
@@ -93,9 +93,9 @@ WORKDIR /srv/bolt
 ARG APP_ENV=prod
 
 # prevent the reinstallation of vendors at every changes in the source code
-COPY composer.json composer.lock symfony.lock ./
+COPY composer.* symfony.lock ./
 RUN set -eux; \
-	composer install --prefer-dist --no-dev --no-scripts --no-progress --no-suggest; \
+	composer install --prefer-dist --no-dev --no-scripts --no-progress; \
 	composer clear-cache
 
 # do not use .env files in production
@@ -119,7 +119,7 @@ VOLUME /srv/bolt/var
 COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck
 
-HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 --start-period=30s CMD ["docker-healthcheck"]
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint

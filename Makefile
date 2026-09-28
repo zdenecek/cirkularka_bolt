@@ -1,4 +1,4 @@
-.PHONY: help install server server-stop cache csclear cscheck csfix stancheck db-create db-update db-reset
+.PHONY: help install server server-stop cache csclear cscheck csfix stancheck db-update db-reset
 .DEFAULT_GOAL := help
 
 help:
@@ -6,7 +6,7 @@ help:
 
 install: ## to install all project
 	composer install
-	make db-create
+	make db-reset
 
 server: ## to start server
 	bin/console server:start 127.0.0.1:8088 || true
@@ -35,15 +35,14 @@ csfix: ## to fix coding style
 stancheck: ## to run phpstan
 	composer phpstan
 
-db-create: ## to create database and load fixtures
-	bin/console doctrine:database:create
-	bin/console doctrine:schema:create
-	bin/console doctrine:fixtures:load --no-interaction
-
 db-update: ## to update schema database
-	bin/console doctrine:schema:update --complete --dump-sql --force --version
+	bin/console doctrine:schema:update --complete --force
+	bin/console doctrine:migrations:sync-metadata-storage -q
+	bin/console doctrine:migrations:version --add --all --no-interaction -q
 
 db-reset: ## to delete database and load fixtures
 	bin/console doctrine:schema:drop --force --full-database
-	bin/console doctrine:schema:create
+	bin/console doctrine:schema:create -q
+	bin/console doctrine:migrations:sync-metadata-storage -q
+	bin/console doctrine:migrations:version --add --all --no-interaction -q
 	bin/console doctrine:fixtures:load --no-interaction

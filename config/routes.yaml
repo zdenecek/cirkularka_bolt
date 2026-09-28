@@ -1,6 +1,6 @@
 # This file defines routes for the frontend and control panel of your Bolt
 # website. Check below for examples, or read the documentation at
-# https://docs.bolt.cm/configuration/routing
+# https://docs.bolt.cm/routing
 
 # ------------------------------------------------------------------------------
 # Place your own routes here, that have a HIGHER priority than the default routes.
@@ -14,7 +14,7 @@
 frontend:
   resource: '../vendor/bolt/core/src/Controller/Frontend/'
   prefix: /
-  type: annotation
+  type: attribute
 
 # ------------------------------------------------------------------------------
 # Place your own routes here, that have a LOWER priority than the default routes.
@@ -23,9 +23,9 @@ frontend:
 
 # Routes for the project-specific functionality
 project:
-  resource: '../src/'
+  resource: '../src/Controller'
   prefix: /
-  type: annotation
+  type: attribute
 
 # ------------------------------------------------------------------------------
 # Examples:

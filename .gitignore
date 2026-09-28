@@ -2,7 +2,6 @@
 /var/data/*
 
 ###> bolt/core ###
-/build.sh
 config/bolt/*_local.yaml
 config/extensions/*_local.yaml
 /config/packages/local
@@ -10,8 +9,6 @@ config/extensions/*_local.yaml
 /public/files/*
 !/public/files/.gitkeep
 !/public/files/index.html
-/public/themes/*
-!/public/themes/.gitkeep
 /public/thumbs/*
 !/public/thumbs/.gitkeep
 !/public/thumbs/index.html
@@ -29,10 +26,8 @@ __*
 .*.swp
 .swp
 *.lock
-!composer.lock
 !symfony.lock
 *lock.json
-!/package-lock.json
 .buildpath
 
 ### Platfom-specific files
@@ -41,24 +36,15 @@ thumbs.db
 Vagrantfile
 .vagrant*
 .idea
+.php-version
 .vscode/*
+*.code-workspace
 appveyor.yml
 
 ###> Docker ###
 docker-compose.override.yml
 docker-compose.override.yaml
 ###< Docker ###
-
-###> friendsofphp/php-cs-fixer ###
-/.php_cs
-/.php_cs.cache
-###< friendsofphp/php-cs-fixer ###
-
-###> squizlabs/php_codesniffer ###
-/.phpcs-cache
-/phpcs.xml
-###< squizlabs/php_codesniffer ###
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
