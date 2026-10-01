@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         env:
           APP_ENV: prod
-        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
       - name: Clear old cache on server
         if: inputs.mode == 'deploy'
